@@ -1,0 +1,78 @@
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
+// Context & Security
+import { AuthProvider } from './context/Auth'; 
+import { ProtectedRoute } from './components/ProtectedRoute';
+
+// Layout & Pages
+import Navbar from './components/Layout/Navbar'; 
+import Footer from './components/Layout/Footer';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import Tasks from './pages/Tasks';
+import ForgotPassword from './pages/ForgotPassword';
+
+const queryClient = new QueryClient();
+
+function AppContent() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const publicPaths = ['/login', '/forgot-password', '/signup'];
+    if (!publicPaths.includes(location.pathname)) {
+      localStorage.setItem('lastPath', location.pathname);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    const lastPath = localStorage.getItem('lastPath');
+    if (lastPath && location.pathname === '/' && lastPath !== '/') {
+      navigate(lastPath);
+    }
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 text-slate-900 dark:text-slate-50">
+      <Navbar />
+      <main className="pt-20 px-4 md:px-8 max-w-7xl mx-auto">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          
+          {/* Protected Routes - Requirement 2.2 Security [cite: 28, 29] */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute><Dashboard /></ProtectedRoute>
+          } />
+          <Route path="/tasks" element={
+            <ProtectedRoute><Tasks /></ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute><Profile /></ProtectedRoute>
+          } />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+}

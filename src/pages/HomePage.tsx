@@ -1,0 +1,179 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Sun, Moon, Sparkles, Target, Calendar, ArrowRight, BarChart3, Users, Zap } from 'lucide-react';
+import Button from '../components/ui/Button';
+import Footer from '../components/Layout/Footer';
+import { Card, CardContent } from '../components/ui/Card';
+
+function HomePage() {
+  const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Dark mode toggle logic
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 text-slate-900 dark:text-slate-100 transition-all duration-500">
+      
+      {/* Professional Theme Toggle */}
+      <header className="fixed top-0 left-0 right-0 z-50 p-6 backdrop-blur-xl bg-white/70 dark:bg-slate-800/70 border-b border-slate-200/50 dark:border-slate-700/50">
+        <div className="max-w-7xl mx-auto flex justify-end">
+          <button 
+            onClick={toggleTheme}
+            className="p-3 rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-xl hover:scale-110 transition-all duration-200 border border-white/20 dark:border-slate-700/20"
+          >
+            {isDarkMode ? <Sun className="text-yellow-400 w-5 h-5" /> : <Moon className="text-blue-600 w-5 h-5" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="relative pt-32 pb-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+            
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-100/50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold tracking-widest uppercase">
+                <Sparkles size={16} />
+                <span>Smart Task Management</span>
+              </div>
+              
+              <h1 className="text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9]">
+                Organize Your World
+              
+              </h1>
+              
+              <p className="text-xl text-slate-600 dark:text-slate-300 max-w-lg font-medium leading-relaxed">
+                Plan your tasks and boost your productivity with our intuitive task manager built for modern teams.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  label="Get Started"
+                  onClick={() => navigate('/login')}
+                  variant="primary"
+                  size="lg"
+                  icon={<ArrowRight size={20} />}
+                  />
+                  {/* Image Section */}
+        
+              </div>
+            </div>
+
+            {/* Right Visual - Professional Card */}
+            <div className="relative">
+              <div className="relative group">
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-3xl blur-3xl group-hover:from-blue-600/30 group-hover:to-purple-600/30 transition-all duration-500"></div>
+                
+                {/* Main visual card */}
+                <Card className="relative overflow-hidden">
+                  <CardContent className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                          <BarChart3 className="text-white" size={24} />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Dashboard Preview</h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">Real-time analytics</p>
+                        </div>
+                      </div>
+                      <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                    </div>
+                    
+                    {/* Stats preview */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">24</div>
+                        <div className="text-xs text-slate-600 dark:text-slate-400">Tasks Today</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-600">18</div>
+                        <div className="text-xs text-slate-600 dark:text-slate-400">Completed</div>
+                      </div>
+                      <div className="text-center">
+                       <div className="text-2xl font-bold text-blue-600">6</div>
+                        <div className="text-xs text-slate-600 dark:text-slate-400">In Progress</div>
+                     
+                      </div>
+                    </div>
+                   
+      
+        
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </main>
+
+      {/* Features Section */}
+      <section className="py-20 px-6 bg-slate-50/50 dark:bg-slate-900/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-4">Powerful Features</h2>
+            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+              Everything you need to manage tasks efficiently and collaborate with your team.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <Target className="text-white" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100">Set Objectives</h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Set clear objectives, track progress, and celebrate achievements with smart goal tracking.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <Calendar className="text-white" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100">Smart Calendar</h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Visualize your tasks and deadlines at a single glance with intelligent scheduling.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <Users className="text-white" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100">Team Collaboration</h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Work together seamlessly with real-time updates and shared workspaces.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+     
+    </div>
+  );
+}
+
+export default HomePage;
