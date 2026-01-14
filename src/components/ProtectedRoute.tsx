@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!session) {
-    // Redirect to login but save the current location to return to later
+   
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

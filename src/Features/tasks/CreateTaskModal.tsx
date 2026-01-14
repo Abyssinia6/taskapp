@@ -13,13 +13,13 @@ import {
 } from "../../components/ui/Dialog";
 
 export default function CreateTaskModal() {
-  // Existing states
+ 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   
-  // New states from Version 1
+ 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [status, setStatus] = useState('todo');
@@ -45,9 +45,9 @@ export default function CreateTaskModal() {
           title, 
           description,
           user_id: user.id, 
-          status: status,      // Selected status
-          start_date: startDate || null, // Saved to DB
-          end_date: endDate || null     // Saved to DB
+          status: status,      
+          start_date: startDate || null, 
+          end_date: endDate || null     
         }
       ]);
 
@@ -56,16 +56,16 @@ export default function CreateTaskModal() {
     if (error) {
       alert(error.message);
     } else {
-      // Reset all fields
+    
       setTitle('');
       setDescription('');
       setStartDate('');
       setEndDate('');
       setStatus('todo');
       
-      setOpen(false); // Close modal
+      setOpen(false); 
       
-      // Refresh the task list across the app
+     
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     }
   };
@@ -99,7 +99,7 @@ export default function CreateTaskModal() {
             isRequired
           />
 
-          {/* Description */}
+     
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
               Description (Optional)
@@ -113,7 +113,7 @@ export default function CreateTaskModal() {
             />
           </div>
 
-          {/* Dates Grid */}
+  
           <div className="grid grid-cols-2 gap-4">
             <Input 
             placeholder='start date'
@@ -131,7 +131,7 @@ export default function CreateTaskModal() {
             />
           </div>
 
-          {/* Status Dropdown */}
+        
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
               Initial Status
@@ -147,7 +147,7 @@ export default function CreateTaskModal() {
             </select>
           </div>
 
-          {/* Submit Button */}
+       
           <Button 
             label={isLoading ? "Saving..." : "Create Task"} 
             disabled={isLoading || !title}

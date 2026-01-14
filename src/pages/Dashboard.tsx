@@ -8,11 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  
-  // 1. Extract Name safely from Supabase Auth Metadata
   const userName = user?.user_metadata?.full_name || "User";
-
-  // 2. Fetching Logic with TanStack Query
   const { data: tasks, isLoading, error } = useQuery({
     queryKey: ['tasks'],
     queryFn: async () => {
@@ -25,8 +21,6 @@ export default function Dashboard() {
       return data;
     },
   });
-
-  // 3. Graceful Loading/Error States
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -38,8 +32,6 @@ export default function Dashboard() {
   if (error) {
     return <div className="p-10 text-red-500 text-center">Error loading tasks. Please try again.</div>;
   }
-
-  // 4. Data processing
   const allTasks = tasks || [];
   const todoTasks = allTasks.filter((t: any) => t.status === 'todo');
   const inProgressTasks = allTasks.filter((t: any) => t.status === 'in_progress');
@@ -47,15 +39,13 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8 p-6 lg:p-10">
-      {/* PERSONALIZED GREETING SECTION */}
+ 
       <div className="flex flex-col gap-1">
         <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100">
           Welcome back, {userName}!
         </h1>
         <p className="text-slate-500 font-medium">Here is what's happening today.</p>
       </div>
-
-      {/* STAT CARDS SECTION */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard 
           title="To Do" 
@@ -77,7 +67,7 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* RECENT TASKS SECTION */}
+    
       <Card className="bg-white dark:bg-slate-900 rounded-[24px] shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800">
           <CardTitle>Recent Tasks</CardTitle>
@@ -109,9 +99,6 @@ export default function Dashboard() {
     </div>
   );
 }
-
-/** * HELPER COMPONENTS
- */
 
 function StatCard({ title, count, icon, bgColor }: any) {
   return (

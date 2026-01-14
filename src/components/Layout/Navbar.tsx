@@ -4,7 +4,7 @@ import { Sun, Moon, LayoutDashboard, CheckSquare, User, Menu, X, Layers } from '
 
 function Navbar() {
   const [isDark, setIsDark] = useState(() => {
-    // 1. Check localStorage or system preference on initial load
+
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') === 'dark' || 
              (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -15,7 +15,7 @@ function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  // 2. Whenever isDark changes, update the HTML class and LocalStorage
+ 
   useEffect(() => {
     const root = window.document.documentElement;
     if (isDark) {
@@ -39,17 +39,17 @@ function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-3">
         
-        {/* Logo */}
+   
         <Link to="/" className="flex items-center gap-2 group">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
             <Layers className="text-white" size={20} />
           </div>
           <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-            TaskMaster
+            TaskManager
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
+ 
         <div className="hidden md:flex items-center gap-2">
           {navItems.map((item) => {
             const isActive = location.pathname === item.to;
@@ -71,7 +71,6 @@ function Navbar() {
 
           <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2" />
 
-          {/* Theme Toggle - Desktop */}
           <button
             onClick={toggleTheme}
             className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:ring-2 ring-slate-200 dark:ring-slate-700 transition-all"
@@ -81,7 +80,6 @@ function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu Actions */}
         <div className="flex md:hidden items-center gap-2">
           <button
             onClick={toggleTheme}
@@ -99,7 +97,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 p-4 space-y-2 shadow-2xl">
           {navItems.map((item) => {

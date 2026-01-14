@@ -13,12 +13,9 @@ interface UserProfile {
   company: string;
   location: string;
 }
-
 export default function Profile() {
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  
-  // 1. Initialize profile state from Supabase Auth Metadata
   const [profile, setProfile] = useState<UserProfile>({
     fullName: user?.user_metadata?.full_name || '',
     email: user?.email || '',
@@ -28,8 +25,6 @@ export default function Profile() {
   });
 
   const [formData, setFormData] = useState<UserProfile>(profile);
-
-  // Sync state if user data loads after initial mount
   useEffect(() => {
     if (user) {
       const data = {
@@ -43,8 +38,6 @@ export default function Profile() {
       setFormData(data);
     }
   }, [user]);
-
-  // 2. Persist data to Supabase
   const handleSave = async () => {
     const { error } = await supabase.auth.updateUser({
       data: { 
@@ -63,13 +56,10 @@ export default function Profile() {
       alert("Profile updated successfully!");
     }
   };
-
-  const handleCancel = () => {
+const handleCancel = () => {
     setFormData(profile);
     setIsEditing(false);
   };
-
-  // 3. Functional Sign Out
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) console.error('Error signing out:', error.message);
@@ -87,7 +77,6 @@ export default function Profile() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Profile Header Section */}
           <div className="flex flex-col items-center space-y-4 pb-6 border-b border-slate-200 dark:border-slate-700">
             <div className="relative">
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
@@ -97,8 +86,7 @@ export default function Profile() {
                 <Camera size={16} className="text-slate-600 dark:text-slate-300" />
               </button>
             </div>
-
-            <div className="text-center">
+<div className="text-center">
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
                 {profile.fullName || "Update your name"}
               </h2>
@@ -110,8 +98,6 @@ export default function Profile() {
               </p>
             </div>
           </div>
-
-          {/* Form Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-slate-900 dark:text-slate-100">Personal Information</h3>
@@ -125,8 +111,7 @@ export default function Profile() {
                 />
               )}
             </div>
-
-            {isEditing ? (
+{isEditing ? (
               <div className="space-y-4">
                 <Input
                   label="Full Name"
@@ -184,21 +169,16 @@ export default function Profile() {
               </div>
             )}
           </div>
-
-          {/* Preferences */}
           <div className="space-y-4 pt-6 border-t border-slate-200 dark:border-slate-700">
             <h3 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Settings size={18} />
               Preferences
             </h3>
-            
             <div className="space-y-3">
               <PreferenceToggle label="Email Notifications" active />
               <PreferenceToggle label="Dark Mode" />
             </div>
           </div>
-
-          {/* Sign Out */}
           <div className="pt-6 border-t border-slate-200 dark:border-slate-700">
             <Button
               label="Sign Out"
@@ -213,8 +193,6 @@ export default function Profile() {
     </div>
   );
 }
-
-// Sub-components for cleaner JSX
 function InfoRow({ label, value }: { label: string, value: string }) {
   return (
     <div className="flex justify-between items-center py-2">

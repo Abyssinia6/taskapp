@@ -27,8 +27,6 @@ export default function SignUpPage() {
     if (error) {
       alert(error.message);
     } else {
-      // With email confirmation OFF, data.session will exist immediately
-      // If it's still null, it means you haven't toggled the setting in Supabase yet
       if (data.session) {
         navigate('/dashboard');
       } else {
