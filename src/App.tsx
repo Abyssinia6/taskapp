@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 // Context & Security
-import { AuthProvider } from './context/Auth'; 
+import { AuthProvider, useAuth } from './context/Auth'; 
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 // Layout & Pages
@@ -22,42 +22,46 @@ const queryClient = new QueryClient();
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { session, loading } = useAuth(); 
 
+  // Track the last path to redirect users back after login
   useEffect(() => {
-    const publicPaths = ['/login', '/forgot-password', '/signup'];
+    const publicPaths = ['/login', '/forgot-password', '/signup', '/'];
     if (!publicPaths.includes(location.pathname)) {
       localStorage.setItem('lastPath', location.pathname);
     }
   }, [location]);
 
+  // Handle automatic redirect to last visited page if logged in
   useEffect(() => {
     const lastPath = localStorage.getItem('lastPath');
-    if (lastPath && location.pathname === '/' && lastPath !== '/') {
+    if (!loading && session && location.pathname === '/' && lastPath && lastPath !== '/') {
       navigate(lastPath);
     }
-  }, []);
+  }, [session, loading, location.pathname, navigate]);
+
+  // Handle the initial loading state gracefully
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 text-slate-900 dark:text-slate-50">
       <Navbar />
       <main className="pt-20 px-4 md:px-8 max-w-7xl mx-auto">
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           
-          {/* Protected Routes - Requirement 2.2 Security [cite: 28, 29] */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute><Dashboard /></ProtectedRoute>
-          } />
-          <Route path="/tasks" element={
-            <ProtectedRoute><Tasks /></ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute><Profile /></ProtectedRoute>
-          } />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Routes>
       </main>
       <Footer />

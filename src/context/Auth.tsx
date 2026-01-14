@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import type {Session, User}  from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
   session: Session | null;
@@ -16,14 +16,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check active sessions
+    // 1. Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth changes
+    // 2. Listen for Sign In / Sign Out
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -33,11 +33,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ session, user, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+ return (
+  <AuthContext.Provider value={{ session, user, loading }}>
+    {children} {/* Remove the !loading check here */}
+  </AuthContext.Provider>
+);
 };
 
 export const useAuth = () => useContext(AuthContext);
