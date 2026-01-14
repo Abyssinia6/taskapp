@@ -1,12 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
-
-// Context & Security
 import { AuthProvider, useAuth } from './context/Auth'; 
 import { ProtectedRoute } from './components/ProtectedRoute';
-
-// Layout & Pages
 import Navbar from './components/Layout/Navbar'; 
 import Footer from './components/Layout/Footer';
 import HomePage from './pages/HomePage';
@@ -16,7 +12,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import ForgotPassword from './pages/ForgotPassword';
-
+import UpdatePassword from './pages/UpdatePassword';
 const queryClient = new QueryClient();
 function AppContent() {
   const location = useLocation();
@@ -51,7 +47,7 @@ function AppContent() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          
+          <Route path="/update-password" element={<ProtectedRoute><UpdatePassword /></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
