@@ -46,7 +46,13 @@ export default function LoginPage() {
               {error}
             </div>
           )}
+           <Input 
+            label="Full Name" 
+            type="text" 
+            placeholder="John Doe"
+         
           
+          />
           <Input 
             label="Email" 
             type="email" 
@@ -57,10 +63,7 @@ export default function LoginPage() {
           
           <div className="space-y-1">
              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
-                <Link to="/forgot-password" className="text-xs font-bold text-blue-600 hover:underline">
-                  Forgot password?
-                </Link>
+             
              </div>
              <Input 
              label="Password"
@@ -70,18 +73,26 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
              />
+              <Input 
+            label="Job Title" 
+            type="text" 
+            placeholder="Software Engineer"
+         onChange={(e) => setEmail(e.target.value)} 
+          />
           </div>
-
-          <Button 
+ <Button 
             label={loading ? "Signing in..." : "Sign In"} 
             onClick={handleLogin} 
             disabled={loading}
             variant="primary" 
             className="w-full h-11 font-bold shadow-lg shadow-blue-500/20"
           />
+             <label className="text-sm font-medium text-slate-700 dark:text-slate-300"></label>
+                <Link to="/forgot-password" className="text-xs font-bold text-blue-600 hover:underline">
+                  Forgot password?
+                </Link>
         </CardContent>
-
-        <CardFooter className="justify-center pb-8 pt-2">
+ <CardFooter className="justify-center pb-8 pt-2">
           <p className="text-sm text-slate-500">
             Don't have an account? <Link to="/signup" className="font-bold text-blue-600 hover:underline">Sign up</Link>
           </p>

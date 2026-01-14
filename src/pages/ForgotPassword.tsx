@@ -6,14 +6,12 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../components/ui/Card";
 function ForgotPassword() {
-  // THE MEMORY LIVES HERE
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
  const handleReset = () => {
     console.log("Resetting for:", email);
-    // Add Supabase reset logic here later
   };
 
   return (

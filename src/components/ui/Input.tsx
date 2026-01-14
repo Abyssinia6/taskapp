@@ -10,6 +10,7 @@ interface InputProps {
   className?: string;
   error?: string;
   value?: string;
+  status?: "To Do" | "In Progress" | "Completed";
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }

@@ -18,29 +18,22 @@ import Tasks from './pages/Tasks';
 import ForgotPassword from './pages/ForgotPassword';
 
 const queryClient = new QueryClient();
-
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const { session, loading } = useAuth(); 
-
-  // Track the last path to redirect users back after login
   useEffect(() => {
     const publicPaths = ['/login', '/forgot-password', '/signup', '/'];
     if (!publicPaths.includes(location.pathname)) {
       localStorage.setItem('lastPath', location.pathname);
     }
   }, [location]);
-
-  // Handle automatic redirect to last visited page if logged in
   useEffect(() => {
     const lastPath = localStorage.getItem('lastPath');
     if (!loading && session && location.pathname === '/' && lastPath && lastPath !== '/') {
       navigate(lastPath);
     }
   }, [session, loading, location.pathname, navigate]);
-
-  // Handle the initial loading state gracefully
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
