@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+📝 TaskFlow: Modern Task Management System
+TaskFlow is a high-performance, responsive task management application designed to help users organize their daily activities using a Kanban-style workflow. It features secure authentication, real-time database syncing, and a dual-theme (Dark/Light) interface.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 Key Features
+Secure Authentication: Full Sign-up, Login, and Password Recovery powered by Supabase Auth.
+Kanban Workflow: Organizes tasks into "Not Started" (Red), "In Progress" (Green), and "Completed" (Purple).
+Smart Transitions: Easily move tasks forward to the next stage or back to a previous stage to correct mistakes.
+Two-Way Sync: Server state management using TanStack Query for instant UI updates and caching.
+Dark Mode Support: Context-aware theme switching that persists across sessions.
+Responsive Design: Mobile-first approach using Tailwind CSS.
 
-Currently, two official plugins are available:
+🛠️ Tech Stack
+Frontend: React 18 + TypeScript + Vite
+Backend/Database: Supabase (PostgreSQL + Auth)
+State Management: TanStack Query (React Query) & React Context API
+Styling: Tailwind CSS & Lucide React (Icons)
+UI Components: Radix UI (via Shadcn/UI)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+📦 Required Libraries
+To function correctly, the following dependencies must be installed. If you are setting this up from scratch or moving code to another app, run:
 
-## React Compiler
+Bash
+# Core Dependencies
+npm install @supabase/supabase-js @tanstack/react-query lucide-react react-router-dom
+# UI & Styling
+npm install tailwind-merge clsx lucide-react @radix-ui/react-dialog
+# Development Tools
+npm install -D typescript vite @types/react @types/node
+⚙️ Project Structure
+Plaintext
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+src/
+├── assets/             # Images 
+├── components/         
+│   ├── Layout/         # Navbar, Footer
+│   ├── ui/             # Reusable Shadcn components (Button, Input, Card, Dialog)
+│   └── tasks/          # TaskCard, TaskColumn
+├── context/            # Auth and Theme Context providers
+├── features/           # Complex logic (CreateTaskModal)
+├── lib/                # Supabase client and utility functions
+├── pages/              # Main route components (TasksPage, Dashboard, Login)
+└── App.tsx             # Main routing and Provider setup
+🔧 Setup Instructions
+1. Environment Variables
+Create a .env file in the root directory and add your Supabase credentials:
 
-## Expanding the ESLint configuration
+Code snippet
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+2. Database Schema
+Ensure your Supabase tasks table has the following columns:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+id: uuid (Primary Key)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+user_id: uuid (References auth.users)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+title: text
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+description: text (nullable)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+status: text (default: 'todo') — Enum: todo, in_progress, done
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+start_date: date (nullable)
+
+end_date: date (nullable)
+
+created_at: timestamp
+
+3. Run Locally
+Bash
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+🛡️ Security (RLS)
+This app is built with Row Level Security (RLS). Ensure your Supabase policies are set so that:
+
+Users can only Select tasks where auth.uid() == user_id.
+
+Users can only Insert/Update/Delete tasks where auth.uid() == user_id.
