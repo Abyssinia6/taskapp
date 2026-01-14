@@ -3,7 +3,7 @@ import { cn } from "../../lib/utils";
 
 interface InputProps {
   label: string;
-  type: "text" | "email" | "password";
+  type: "text" | "email" | "password"|"date";
   placeholder: string;
   isRequired?: boolean;
   variant?: "primary" | "outlined" | "filled";

@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "../components/Layout/Navbar";
-import Footer from "../components/Layout/Footer";
-import TaskColumn from "../components/tasks/TaskColumn"; 
+import Navbar from "../../components/Layout/Navbar";
+import Footer from "../../components/Layout/Footer";
+import TaskColumn from "../../components/tasks/TaskColumn"; 
 import diamo from "../assets/diamo.png"; 
 
 function TasksPage() {

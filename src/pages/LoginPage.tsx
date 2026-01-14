@@ -1,101 +1,92 @@
-import React, { useState } from "react";
-import Button from "../components/ui/Button";
+import { useState } from "react";
+import { supabase } from '../lib/supabase';
 import { useNavigate, Link } from "react-router-dom";
 import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../components/ui/Card";
 
-function LoginPage() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState(""); // New State
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleLogin = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    setLoading(true);
     setError("");
 
-    // 1. Validate Full Name (Letters and Spaces only)
-    const nameRegex = /^[A-Za-z\s]+$/;
-    if (!nameRegex.test(fullName)) {
-      setError("Full Name must only contain letters.");
-      return;
-    }
+    // REAL Supabase Login
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    // 2. Validate Password Length (At least 8 characters)
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
-      return;
-    }
+    setLoading(false);
 
-    try {
-      // 3. Simulated Email Logic
-      // In a real app, you'd call an API here to send the "Welcome" email
-      console.log(`Sending welcome email to: ${email}`);
-      
-      // Navigate to dashboard on success
-      navigate('/Dashboard'); 
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
+    if (error) {
+      setError(error.message);
+    } else {
+      navigate('/dashboard');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-160px)] p-6">
-      <Card className="w-full max-w-md shadow-2xl rounded-[32px] border-none">
-        <CardHeader className="pt-10 pb-2">
-          <CardTitle className="text-3xl font-black text-center text-slate-900 dark:text-white">
-            Welcome Back
-          </CardTitle>
-          {error && <p className="text-red-500 text-center text-sm font-bold mt-2">{error}</p>}
+    <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-slate-950 p-4">
+      <Card className="w-full max-w-md shadow-xl border-0 bg-white dark:bg-slate-900">
+        <CardHeader className="space-y-1 text-center pb-6">
+          <CardTitle className="text-2xl font-black tracking-tight">Welcome back</CardTitle>
+          <p className="text-sm text-slate-500">Enter your credentials to access your account</p>
         </CardHeader>
         
-        <CardContent className="space-y-5 px-8 pb-8">
-          {/* Full Name Input - Added Validation logic */}
-          <Input
-            label="Full Name"
-            type="text"
-            placeholder="John Doe"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-          />
-
-          <Input
-            label="Email Address"
-            type="email"
-            placeholder="name@company.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+        <CardContent className="space-y-4">
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm p-3 rounded-md font-bold text-center">
+              {error}
+            </div>
+          )}
+          
+          <Input 
+            label="Email" 
+            type="email" 
+            placeholder="name@example.com"
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
           />
           
-          <Input
-            label="Password"
-            type="password"
-            placeholder="Min 8 characters"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-          />
+          <div className="space-y-1">
+             <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
+                <Link to="/forgot-password" className="text-xs font-bold text-blue-600 hover:underline">
+                  Forgot password?
+                </Link>
+             </div>
+             <Input 
+             label="Password"
+              type="password" 
+              placeholder="••••••••"
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+             />
+          </div>
 
           <Button 
-            label="Sign In" 
+            label={loading ? "Signing in..." : "Sign In"} 
             onClick={handleLogin} 
-            variant="primary"
-            size="lg"
-            className="w-full h-12 text-md font-bold rounded-2xl shadow-lg shadow-blue-500/20"
+            disabled={loading}
+            variant="primary" 
+            className="w-full h-11 font-bold shadow-lg shadow-blue-500/20"
           />
-         
         </CardContent>
 
-        <CardFooter className="bg-slate-50 dark:bg-slate-800/50 rounded-b-[32px] p-6 justify-center">
-          <p className="text-sm text-slate-500 font-medium">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-blue-600 font-bold hover:underline">Sign up</Link>
+        <CardFooter className="justify-center pb-8 pt-2">
+          <p className="text-sm text-slate-500">
+            Don't have an account? <Link to="/signup" className="font-bold text-blue-600 hover:underline">Sign up</Link>
           </p>
         </CardFooter>
       </Card>
     </div>
   );
 }
-
-export default LoginPage;
