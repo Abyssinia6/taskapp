@@ -1,26 +1,21 @@
 import React from "react";
 import { cn } from "../../lib/utils";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  icon?: React.ReactNode; 
+  icon?: React.ReactNode;
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
-  onClick?: () => void;
-  className?: string;
-  disabled?: boolean;
 }
 
-function Button({ 
-  label, 
-  variant = "primary", 
-  size = "md", 
-  onClick, 
-  icon, 
+function Button({
+  label,
+  variant = "primary",
+  size = "md",
+  icon,
   className,
-  disabled = false 
+  ...props
 }: ButtonProps) {
-  
   const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
   
   const sizes = {
@@ -37,15 +32,9 @@ function Button({
   };
 
   return (
-    <button 
-      className={cn(
-        baseStyles,
-        sizes[size],
-        variants[variant],
-        className
-      )}
-      onClick={onClick}
-      disabled={disabled}
+    <button
+      className={cn(baseStyles, sizes[size], variants[variant], className)}
+      {...props}
     >
       {icon && <span className="flex-shrink-0">{icon}</span>}
       <span>{label}</span>

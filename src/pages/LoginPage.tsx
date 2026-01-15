@@ -64,6 +64,7 @@ export default function LoginPage() {
                 </Link>
               </div>
               <Input 
+              label="password"
                 type="password" 
                 placeholder="••••••••"
                 value={password} 

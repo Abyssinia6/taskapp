@@ -1,14 +1,19 @@
+
+
+
+
+
 import React from "react";
 import { cn } from "../../lib/utils";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   isRequired?: boolean;
   variant?: "primary" | "outlined" | "filled";
   error?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ label, isRequired, variant = "primary", className, error, ...props }, ref) => {
     const getVariantStyles = () => {
       switch (variant) {
@@ -28,14 +33,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
           {label} {isRequired && <span className="text-red-500 ml-1">*</span>}
         </label>
-        <input
+        <textarea
           ref={ref}
           className={cn(
-            "w-full px-4 py-3 rounded-2xl transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 bg-white dark:bg-slate-800",
+            "w-full px-4 py-3 rounded-2xl transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 bg-white dark:bg-slate-800 outline-none",
             getVariantStyles(),
             error && "border-red-500 focus:border-red-500 focus:ring-red-500/20",
             className
           )}
+          rows={4}
           {...props}
         />
         {error && <p className="text-sm text-red-500 dark:text-red-400">{error}</p>}
@@ -44,5 +50,5 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input";
-export default Input;
+Textarea.displayName = "Textarea";
+export default Textarea;

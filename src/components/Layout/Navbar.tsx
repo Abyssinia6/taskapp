@@ -40,15 +40,14 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-3">
         
    
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-            <Layers className="text-white" size={20} />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-            TaskManager
-          </span>
-        </Link>
-
+    <div className="flex items-center gap-2 select-none"> 
+  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+    <Layers className="text-white" size={20} />
+  </div>
+  <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+    TaskManager
+  </span>
+</div>
  
         <div className="hidden md:flex items-center gap-2">
           {navItems.map((item) => {
